@@ -2,20 +2,21 @@ const file = require('fs');
 const http = require('http');
 const path = require('path');
 const sql = require('mysql');
+var querystring = require('querystring');
 
 const port = 3000;
 const front_path = path.join(process.cwd(), '..', 'ducademy-front');
 
-const sqlconnection = sql.createConnection({
-    host: "localhost",
-    user: "geonho",
-    password: "miner369"
-});
-sqlconnection.connect(function (error) {
-    if (error) { throw error }
-    else { console.log("Connected with sql") }
+// const sqlconnection = sql.createConnection({
+//     host: "localhost",
+//     user: "geonho",
+//     password: "miner369"
+// });
+// sqlconnection.connect(function (error) {
+//     if (error) { throw error }
+//     else { console.log("Connected with sql") }
 
-})
+// })
 
 var server;
 server = http.createServer(function (req, res) {
@@ -27,7 +28,17 @@ server = http.createServer(function (req, res) {
     var filename = path.join(front_path, url); //현재 폴더 위치 + 요청한 url
     //console.log(filename);
 
-    if (method == 'GET') {
+    var postdata = '';
+    req.on('data', function (data) {
+        console.log('sex')
+        postdata += data;
+    });
+    req.on('end', function () {
+        var parsedQuery = querystring.parse(postdata);
+        console.log(parsedQuery);
+    });
+    if (method == 'GET' || method == "POST") {
+
         file.exists(filename, function (exists) {
             if (exists) {
                 file.readFile(filename
@@ -48,13 +59,21 @@ server = http.createServer(function (req, res) {
             else {
                 res.writeHead(404, { "Content-Type": "text/plain" });
                 res.write("404 Not Found\n");
-                res.end();
+                res.end()
             }
         });
     }
-    else if (method == 'POST') {
-        console.log(req)
-    }
+    // else if (method == 'POST') {
+    //     var postdata = '';
+    //     req.on('data', function (data) {
+    //         postdata = postdata + data;
+    //     });
+    //     req.on('end', function () {
+    //         var parsedQuery = querystring.parse(postdata);
+    //         console.log(parsedQuery);
+    //     });
+    //     res.end()
+    // }
 });
 
 server.listen(port, function () {
