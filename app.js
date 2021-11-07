@@ -66,12 +66,6 @@ app.post('/', function (require, response) {
 })
 
 app.post('/login', function (request, response) {
-
-    //var users = database.db(databaseName).collection("users");
-    const newUser = new User({
-        email: request.body.login_id,
-        password: request.body.login_password
-    })
     User.findOne({
         email: request.body.login_id,
         password: request.body.login_password
