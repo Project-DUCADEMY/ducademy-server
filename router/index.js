@@ -8,8 +8,6 @@ router.get(function (req, res) {
     const { method, url } = req;
     console.log(url, method);
     res.sendFile(front_folder + '/ducami-login.html')
-    //res.sendFile(front_folder + '/ducami-login.css')
-    //res.sendFile(front_folder + '/ducami-login.js')
 });
 
 module.exports = router;
