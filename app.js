@@ -19,24 +19,6 @@ app.set('static', route)
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile);
 
-// const mongoClient = require('mongodb').MongoClient
-// mongoose.connect('mongodb://localhost:27017/ducademy', {
-//     useNewUrlParser: true, useUnifiedTopology: true
-// }).then(() => console.log('MongoDB connected!'))
-//     .catch(error => console.log(error))
-// const database = mongoose.connection
-// var database;
-// mongoose.connect(`mongodb://localhost:27017/${databaseName}`,
-//     function (err, db) {
-//         if (err) {
-//             console.log('db connect error');
-//             return;
-//         }
-//         console.log('db was connected : ' + databaseName);
-//         database = db;
-//     }
-// );
-
 var db = mongoose.connect('mongodb://localhost:27017/ducademy', (err) => {
     if (err) {
         console.log(err.message);
@@ -59,15 +41,12 @@ var User = mongoose.model('users', user);
 
 app.use('/', express.static(path.join(process.cwd(), '..', 'ducademy-front')))
 app.get('/', function (request, response) {
-    response.sendFile(autoRoute('ducami-login.html'))
+    redirect(response, 'http://localhost:3000/mainpage')
 })
+pageRender('mainpage', 'ducami-main.html')
+pageRender('loginPage', 'ducami-login.html')
 app.use(bodyParser.urlencoded({ extended: false }))
-app.post('/', function (require, response) {
-})
-
 app.post('/login', function (request, response) {
-
-    //var users = database.db(databaseName).collection("users");
     const newUser = new User({
         email: request.body.login_id,
         password: request.body.login_password
@@ -104,24 +83,17 @@ app.post('/join', function (request, response) {
     response.end();
 })
 
-user.methods.comparePassword = function (plainPassword, cb) {
-    bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-}
-
 function autoRoute(filename) {
     return path.join(route, filename)
 }
-
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'geonho',
-//     password: 'miner369',
-// });
-
-// connection.connect(function (error) {
-//     if (error) throw error;
-//     console.log('Connected')
-// });
+function redirect(res, link) {
+    res.statusCode = 302;
+    res.setHeader('Location', link);
+    res.end();
+}
+function pageRender(url, mainHtml) {
+    app.use(`/${url}`, express.static(path.join(process.cwd(), '..', 'ducademy-front', url)))
+    app.get(`/${url}`, function (request, response) {
+        response.render(`${url}/${mainHtml}`)
+    })
+}
