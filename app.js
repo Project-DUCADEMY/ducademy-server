@@ -47,10 +47,6 @@ pageRender('mainpage', 'ducami-main.html')
 pageRender('loginPage', 'ducami-login.html')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.post('/login', function (request, response) {
-    const newUser = new User({
-        email: request.body.login_id,
-        password: request.body.login_password
-    })
     User.findOne({
         email: request.body.login_id,
         password: request.body.login_password
