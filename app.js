@@ -44,7 +44,7 @@ app.get('/', function (request, response) {
     redirect(response, 'http://localhost:3000/mainpage')
 })
 pageRender('mainpage', 'ducami-main.html')
-pageRender('loginPage', 'ducami-login.html')
+pageRender('loginpage', 'ducami-login.html')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.post('/login', function (request, response) {
     User.findOne({
