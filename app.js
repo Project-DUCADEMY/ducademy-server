@@ -19,7 +19,7 @@ app.set('static', route)
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile);
 
-var db = mongoose.connect('mongodb://localhost:27017/ducademy', (err) => {
+var datebase = mongoose.connect('mongodb://localhost:27017/ducademy', (err) => {
     if (err) {
         console.log(err.message);
     } else {
@@ -27,22 +27,8 @@ var db = mongoose.connect('mongodb://localhost:27017/ducademy', (err) => {
     }
 });
 
-
-var user = mongoose.Schema({
-    username: 'string',
-    birthday: 'number',
-    email: 'string',
-    phonenumber: 'number',
-    password: 'string',
-    role: 'string',
-    grade: 'number'
-})
-var User = mongoose.model('users', user);
-
-app.use('/', express.static(path.join(process.cwd(), '..', 'ducademy-front')))
-app.get('/', function (request, response) {
-    redirect(response, 'http://localhost:3000/mainpage')
-})
+app.use('/', express.static(route))
+app.get('/', function (request, response) { redirect(response, 'http://localhost:3000/mainpage') })
 pageRender('mainpage', 'ducami-main.html')
 pageRender('loginpage', 'ducami-login.html')
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -79,6 +65,9 @@ app.post('/join', function (request, response) {
     response.end();
 })
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/login', require('./router/login.js'));
+app.use('/join', require('./router/join.js'));
 function autoRoute(filename) {
     return path.join(route, filename)
 }
@@ -88,7 +77,7 @@ function redirect(res, link) {
     res.end();
 }
 function pageRender(url, mainHtml) {
-    app.use(`/${url}`, express.static(path.join(process.cwd(), '..', 'ducademy-front', url)))
+    app.use(`/${url}`, express.static(route))
     app.get(`/${url}`, function (request, response) {
         response.render(`${url}/${mainHtml}`)
     })
