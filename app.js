@@ -1,9 +1,18 @@
 const express = require('express');
 const path = require('path');
-const file = require('fs');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-var crypto = require('crypto');
+const mysql = require('mysql2');
+const dotenv = require("dotenv");
+
+dotenv.config({
+    path: path.resolve(
+        process.cwd(),
+        process.env.NODE_ENV == "production" ? ".env" : ".env.dev"
+    ),
+});
+
+
 
 const app = express();
 const port = 3000
@@ -11,6 +20,23 @@ const route = path.join(process.cwd(), '..', 'ducademy-front')
 const server = app.listen(port, () => {
     console.log("Server start : localhost:" + port)
 })
+
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: '3306',
+    user: process.env.MYSQL_USERNAME,
+    password: process.env.MYSQL_PASSWORD,
+    database: 'ducademy'
+});
+connection.connect(err => {
+    if (err) {
+        console.log(err)
+    }
+    else {
+        console.log("database connected!")
+    }
+});
 
 const databaseName = 'ducademy'
 
