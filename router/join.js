@@ -1,33 +1,19 @@
-const mongoose = require('mongoose');
-const user = mongoose.Schema({
-    username: String,
-    birthday: String,
-    email: { type: String, unique: true },
-    phonenumber: { type: String, unique: true },
-    password: String,
-    role: String,
-    grade: String
-})
-var User = mongoose.model('user', user);
-
+const connection = require('./database/connection').connection
 const express = require('express')
 const router = express.Router()
-router.post('/join', (request, response) => {
+const crypto = require('crypto');
+router.post('', (request, response) => {
+    console.log('join require');
     if (request.body.join_password != request.body.join_passwordcheck) {
         console.log("PASSWORD DIFFEREND")
     }
-    const newUser = new User({
-        username: request.body.join_name,
-        birthday: request.body.join_birthday,
-        email: request.body.join_email,
-        phonenumber: request.body.join_phonenumber,
-        password: request.body.join_password
-    })
-    newUser.save(function (err, data) {
-        if (err) { console.log(err) }
-        else { console.log("Saved") }
-    })
-    require('./utility').redirect(response, "http://localhost:3000/")
-})
+    const sql_query = `INSERT INTO test (id ,password) VALUES ('${request.body.join_name}', 
+    '${crypto.createHash('sha256').update(process.env.PASSWORD_KEY).digest('base64')}');` //sql 쿼리문
+    connection.query(sql_query, (err, results, fields) => {
+        if (err) { console.log(err); }
+        console.log(results);
+    });
 
+    require('../helpers').redirect(response, "http://localhost:3000/")
+})
 module.exports = router;

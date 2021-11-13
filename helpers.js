@@ -3,4 +3,4 @@ function redirect(res, link) {
     res.setHeader('Location', link);
     res.end();
 }
-module.exports.redirect = utility;
+exports.redirect = redirect;

@@ -1,107 +1,36 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const mysql = require('mysql2');
-const dotenv = require("dotenv");
 
-dotenv.config({
+const http_port = process.env.HTTP_PORT;
+const dotenv = require("dotenv").config({
     path: path.resolve(
-        process.cwd(),
+        path.join(process.cwd(), 'config'),
         process.env.NODE_ENV == "production" ? ".env" : ".env.dev"
     ),
 });
 
-
-
 const app = express();
-const port = 3000
 const route = path.join(process.cwd(), '..', 'ducademy-front')
-const server = app.listen(port, () => {
-    console.log("Server start : localhost:" + port)
-})
-
-
-const connection = mysql.createConnection({
-    host: 'localhost',
-    port: '3306',
-    user: process.env.MYSQL_USERNAME,
-    password: process.env.MYSQL_PASSWORD,
-    database: 'ducademy'
-});
-connection.connect(err => {
-    if (err) {
-        console.log(err)
-    }
-    else {
-        console.log("database connected!")
-    }
-});
-
-const databaseName = 'ducademy'
 
 app.set('views', route)
 app.set('static', route)
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile);
 
-var datebase = mongoose.connect('mongodb://localhost:27017/ducademy', (err) => {
-    if (err) {
-        console.log(err.message);
-    } else {
-        console.log('Succesfully Connected!');
-    }
-});
-
 app.use('/', express.static(route))
-app.get('/', function (request, response) { redirect(response, 'http://localhost:3000/mainpage') })
+app.get('/', function (request, response) { require('./helpers').redirect(response, 'http://localhost:3000/loginpage') })
 pageRender('mainpage', 'ducami-main.html')
 pageRender('loginpage', 'ducami-login.html')
-app.use(bodyParser.urlencoded({ extended: false }))
-app.post('/login', function (request, response) {
-    User.findOne({
-        email: request.body.login_id,
-        password: request.body.login_password
-    }, (err, user) => {
-        console.log(err, user)
-    })
-
-    response.statusCode = 302;
-    response.setHeader('Location', 'http://localhost:3000/');
-    response.end();
-})
-app.post('/join', function (request, response) {
-
-    if (request.body.join_password != request.body.join_passwordcheck) {
-        console.log("PASSWORD DIFFEREND")
-    }
-    const newUser = new User({
-        username: request.body.join_name,
-        birthday: request.body.join_birthday,
-        email: request.body.join_email,
-        phonenumber: request.body.join_phonenumber,
-        password: request.body.join_password
-    })
-    newUser.save(function (err, data) {
-        if (err) { console.log(err) }
-        else { console.log("Saved") }
-    })
-    response.statusCode = 302;
-    response.setHeader('Location', 'http://localhost:3000/');
-    response.end();
-})
 
 app.use(bodyParser.urlencoded({ extended: false }))
+
 app.use('/login', require('./router/login.js'));
 app.use('/join', require('./router/join.js'));
-function autoRoute(filename) {
-    return path.join(route, filename)
-}
-function redirect(res, link) {
-    res.statusCode = 302;
-    res.setHeader('Location', link);
-    res.end();
-}
+
+const server = app.listen(http_port, () => {
+    console.log("Server start : localhost:" + http_port)
+})
 function pageRender(url, mainHtml) {
     app.use(`/${url}`, express.static(route))
     app.get(`/${url}`, function (request, response) {
