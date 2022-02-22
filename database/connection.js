@@ -3,7 +3,7 @@ import config from '../config/config.js'
 
 let database = mysql.createConnection(config.database_connection)
 
-database.connect( err => {
+database.connect(err => {
     if (err) { 
         throw (err) 
     }
