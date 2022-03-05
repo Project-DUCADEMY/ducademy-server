@@ -19,6 +19,8 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "rand-token": "^1.0.1"
+    "rand-token": "^1.0.1",
+    "socket.io": "2.3.0",
+    "cors": "2.8.5"
   }
 }

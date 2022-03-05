@@ -4,25 +4,32 @@ import * as user from "../database/user.js"
 import convertpassword from '../config/convertpassword.js'
 const router = express.Router()
 
+
 router.post('/in', (req, res) => {
-    const datas = req.body
-    convertpassword(datas.password).then(password => {
-        user.finduser(['email', 'password'], [datas.email, password])
-        .then(result => {
-            if(result.length == 1) { 
-                req.session.uid = result[0].id;            
-                req.session.isLogined = true;
-                req.session.save(() => {                           
-                    res.send(req.session.uid.toString(10));
-                });
-            }
-            else if(result.length < 1) { res.send('Nonexistent user') }
-            else if(result.length > 1) { console.error('sign up error: ' + result.length) }
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    })
+    // const datas = req.body
+    // convertpassword(datas.password).then(password => {
+    //     user.finduser(['email', 'password'], [datas.email, password])
+    //     .then(result => {
+    //         if(result.length == 1) { 
+    //             req.session.uid = result[0].id;            
+    //             req.session.isLogined = true;
+    //             req.session.save(() => {                           
+    //                 res.send(req.session.uid.toString(10));
+    //             });
+    //         }
+    //         else if(result.length < 1) { res.send('Nonexistent user') }
+    //         else if(result.length > 1) { console.error('sign up error: ' + result.length) }
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     })
+    // })
+
+    req.session.uid = 4;            
+    req.session.isLogined = true;
+    req.session.save(() => {                           
+        res.send(req.session.uid.toString(10));
+    });
 })
 router.post('/up', (req, res) => {
     sign.signup(req.body)
@@ -41,3 +48,4 @@ router.post('/out', (req, res) => {
 })
 
 export default router
+
