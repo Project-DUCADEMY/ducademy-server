@@ -10,22 +10,22 @@ import config from './config/config.js'
 
 const app = express()
 
-let server = http.createServer(app).listen(config.http_port,
+http.createServer(app).listen(config.http_port,
     (result) => {
         console.log('Server Start port: ', config.http_port)
     })
 
 
-// try {
-//     https.createServer(
-//         {key: config.https.key, 
-//         cert: config.https.cert}, app)
-//     .listen(config.https_port, () => {
-//         console.log('HTTPS Server Start port: ', config.https_port)
-//     })
-// } catch (e) {
-//     console.error(e)
-// }
+try {
+    https.createServer(
+        {key: config.https.key, 
+        cert: config.https.cert}, app)
+    .listen(config.https_port, () => {
+        console.log('HTTPS Server Start port: ', config.https_port)
+    })
+} catch (e) {
+    console.error(e)
+}
 
 
 const sessionStore = new MySQLStore(config.database_connection)
