@@ -6,7 +6,16 @@ let server = http.createServer(app);
 let socketio = require('socket.io');
 let io = socketio.listen(server);
 
-app.use(cors());
+// import express from 'express';
+// import http from 'http';
+// import cors from 'cors';
+// import {Server as socketio} from 'socket.io';
+
+// let app = express();
+// let server = http.createServer(app);
+// let io = new socketio(server);
+// app.use(cors());
+
 const PORT = process.env.PORT || 8080;
 
 let users = {};
