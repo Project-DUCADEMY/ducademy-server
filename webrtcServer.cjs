@@ -3,13 +3,13 @@ let https = require('https');
 let app = express();
 let cors = require('cors');
 let fs = require('fs');
+
+
+
 const config = JSON.parse(fs.readFileSync('./config/config.json', 'utf8'))
 let server = https.createServer(
     {key: fs.readFileSync(config.https.key), 
     cert: fs.readFileSync(config.https.cert)}, app)
-.listen(config.https_port, () => {
-    console.log('HTTPS Server Start port: ', config.https_port)
-})
 
 let socketio = require('socket.io');
 let io = socketio.listen(server);
