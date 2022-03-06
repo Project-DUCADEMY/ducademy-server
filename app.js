@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import path from 'path'
 import http from 'http'
 import https from 'https'
@@ -18,8 +19,8 @@ http.createServer(app).listen(config.http_port,
 
 try {
     https.createServer(
-        {key: config.https.key, 
-        cert: config.https.cert}, app)
+        {key: fs.readFileSync(config.https.key), 
+        cert: fs.readFileSync(config.https.cert)}, app)
     .listen(config.https_port, () => {
         console.log('HTTPS Server Start port: ', config.https_port)
     })
