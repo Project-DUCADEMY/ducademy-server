@@ -81,3 +81,16 @@ export const login = async (req, res) => {
 
   return res.redirect("/")
 }
+
+export const userinfo = (req, res) => {
+  const { name, username, email } = req.session.user
+
+  console.log(req.session)
+  if (req.session.loggedIn) {
+    res.status(201).json({
+      name,
+      username,
+      email,
+    })
+  }
+}
