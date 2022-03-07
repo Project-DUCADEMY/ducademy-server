@@ -3,6 +3,7 @@ import session from "express-session"
 import MongoStore from "connect-mongo"
 import globalRouter from "./routers/globalRouter"
 import { localsMiddlewares } from "./middlewares"
+import userInfoRouter from "./routers/userInfoRouter"
 
 const app = express()
 
@@ -21,8 +22,6 @@ app.use(
 // app.use(localsMiddlewares)
 app.use("/authenticate", globalRouter)
 
-app.get("/test", (req, res) => {
-  res.send("testing")
-})
+app.use("/", userInfoRouter)
 
 export default app
