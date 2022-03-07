@@ -19,7 +19,7 @@ export const join = async (req, res) => {
     })
   }
 
-  const usernameExists = await User.exists({ $or: [{ username }] })
+  const usernameExists = await User.exists({ $or: [{ email }] })
   if (usernameExists) {
     return res.status(400).json({
       code: 400,
@@ -80,4 +80,17 @@ export const login = async (req, res) => {
   req.session.user = user
 
   return res.redirect("/")
+}
+
+export const userinfo = (req, res) => {
+  const { name, username, email } = req.session.user
+
+  console.log(req.session)
+  if (req.session.loggedIn) {
+    res.status(201).json({
+      name,
+      username,
+      email,
+    })
+  }
 }
