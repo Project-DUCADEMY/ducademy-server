@@ -57,20 +57,20 @@ export const join = async (req, res) => {
 
 export const login = async (req, res) => {
   const { username, password } = req.body
+  let ok = []
 
   const user = await User.findOne({ username })
 
   if (!user) {
-    res.status(400).join({
+    return res.status(400).json({
       code: 400,
       errorMessage: "User is not found",
     })
+  } else {
+    ok = await bcrypt.compare(password, user.password)
   }
-
-  const pass = await bcrypt.compare(password, user.password)
-
-  if (!pass) {
-    res.status(400).json({
+  if (!ok) {
+    return res.status(400).json({
       code: 400,
       errorMessage: "The password is wrong.",
     })
@@ -86,6 +86,7 @@ export const userinfo = (req, res) => {
   const { name, username, email } = req.session.user
 
   console.log(req.session)
+
   if (req.session.loggedIn) {
     res.status(201).json({
       name,
