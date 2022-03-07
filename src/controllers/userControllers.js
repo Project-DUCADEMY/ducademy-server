@@ -19,7 +19,7 @@ export const join = async (req, res) => {
     })
   }
 
-  const usernameExists = await User.exists({ $or: [{ username }] })
+  const usernameExists = await User.exists({ $or: [{ email }] })
   if (usernameExists) {
     return res.status(400).json({
       code: 400,
