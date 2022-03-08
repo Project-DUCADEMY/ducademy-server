@@ -56,10 +56,10 @@ export const join = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-  const { username, password } = req.body
+  const { email, password } = req.body
   let ok = []
 
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ email })
 
   if (!user) {
     return res.status(400).json({
@@ -83,7 +83,7 @@ export const login = async (req, res) => {
 }
 
 export const userinfo = (req, res) => {
-  if(req.session.user === undefined) {
+  if (req.session.user === undefined) {
     res.status(401)
     res.send()
     return 0
