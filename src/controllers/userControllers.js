@@ -100,3 +100,9 @@ export const userinfo = (req, res) => {
     })
   }
 }
+
+export const logout = (req, res) => {
+  req.session.loggedIn = false
+
+  res.redirect("/")
+}
