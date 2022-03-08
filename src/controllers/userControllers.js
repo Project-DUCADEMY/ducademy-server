@@ -83,6 +83,11 @@ export const login = async (req, res) => {
 }
 
 export const userinfo = (req, res) => {
+  if(req.session.user === undefined) {
+    res.status(401)
+    res.send()
+    return 0
+  }
   const { name, username, email } = req.session.user
 
   console.log(req.session)
