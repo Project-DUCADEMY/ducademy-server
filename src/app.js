@@ -4,9 +4,8 @@ import MongoStore from "connect-mongo"
 import globalRouter from "./routers/globalRouter"
 import { localsMiddlewares } from "./middlewares"
 import userInfoRouter from "./routers/userInfoRouter"
-import path from 'path';
-const __dirname = path.resolve();
-
+import path from "path"
+const __dirname = path.resolve()
 
 const app = express()
 
@@ -22,10 +21,10 @@ app.use(
   })
 )
 
-app.use ( express.static( './../ducademy-front/build/' ))
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ducademy-front/build/index.html'))
-})
+// app.use ( express.static( './../ducademy-front/build/' ))
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../ducademy-front/build/index.html'))
+// })
 
 // app.use(localsMiddlewares)
 app.use("/authenticate", globalRouter)

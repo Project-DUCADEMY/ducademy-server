@@ -61,6 +61,8 @@ export const login = async (req, res) => {
 
   const user = await User.findOne({ email })
 
+  console.log(user)
+
   if (!user) {
     return res.status(400).json({
       code: 400,
@@ -79,7 +81,7 @@ export const login = async (req, res) => {
   req.session.loggedIn = true
   req.session.user = user
 
-  return res.redirect("/")
+  return res.send("hi")
 }
 
 export const userinfo = (req, res) => {
