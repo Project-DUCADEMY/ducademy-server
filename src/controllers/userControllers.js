@@ -104,7 +104,9 @@ export const userinfo = (req, res) => {
 }
 
 export const logout = (req, res) => {
-  req.session.loggedIn = false
+  req.session.destroy()
+
+  console.log(req.session)
 
   res.redirect("/")
 }
