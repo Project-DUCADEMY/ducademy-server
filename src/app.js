@@ -31,4 +31,9 @@ app.use("/authenticate", globalRouter)
 
 app.use("/", userInfoRouter)
 
+app.get("/test", (req, res) => {
+  console.log("test")
+  res.send("test")
+})
+
 export default app

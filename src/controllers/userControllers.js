@@ -2,7 +2,7 @@ import bcrypt from "bcrypt"
 import User from "../models/User"
 
 export const join = async (req, res) => {
-  const { name, username, email, password, passwordCh } = req.body
+  const { name, username, email, password, passwordCh, job } = req.body
 
   if (password !== passwordCh) {
     return res.status(400).json({
@@ -43,6 +43,7 @@ export const join = async (req, res) => {
       username,
       email,
       password: passwordHash,
+      job,
     })
   } catch (e) {
     console.error(e)
