@@ -2,20 +2,12 @@ import bcrypt from "bcrypt"
 import User from "../models/User"
 
 export const join = async (req, res) => {
-  const { name, username, email, password, passwordCh, job } = req.body
+  const { username, email, password, passwordCh } = req.body
 
   if (password !== passwordCh) {
     return res.status(400).json({
       code: 400,
       errorMessage: "The passwords are different.",
-    })
-  }
-
-  const nameExists = await User.exists({ $or: [{ name }] })
-  if (nameExists) {
-    return res.status(400).json({
-      code: 400,
-      errorMessage: "This name already exists.",
     })
   }
 
@@ -39,11 +31,9 @@ export const join = async (req, res) => {
 
   try {
     await User.create({
-      name,
       username,
       email,
       password: passwordHash,
-      job,
     })
   } catch (e) {
     console.error(e)
