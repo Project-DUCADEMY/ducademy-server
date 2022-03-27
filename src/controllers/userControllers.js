@@ -39,7 +39,7 @@ export const join = async (req, res) => {
     console.error(e)
     return res.status(400).json({
       code: 400,
-      errorMessage: "DB error",
+      errorMessage: "DB error : User",
     })
   }
 

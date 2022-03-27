@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const QuestionSchema = new mongoose.Schema({
-  name: { type: String, required: true, maxlength: 20 },
+  title: { type: String, required: true, maxlength: 20 },
   day: { type: String, required: true },
   description: { type: String, required: true, maxlength: 100 },
   answer: { type: Number, required: true },
