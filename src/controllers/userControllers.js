@@ -72,7 +72,10 @@ export const login = async (req, res) => {
   req.session.loggedIn = true
   req.session.user = user
 
-  return res.send("hi")
+  return res.status(200).json({
+    code: 200,
+    message: "success",
+  })
 }
 
 export const userinfo = (req, res) => {
