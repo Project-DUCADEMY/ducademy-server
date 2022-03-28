@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import nodemailer from "nodemailer"
 import User from "../models/User"
 
 export const join = async (req, res) => {
@@ -52,8 +53,6 @@ export const login = async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  console.log(user)
-
   if (!user) {
     return res.status(400).json({
       code: 400,
@@ -90,7 +89,6 @@ export const userinfo = (req, res) => {
 
   if (req.session.loggedIn) {
     res.status(201).json({
-      name,
       username,
       email,
     })

@@ -1,6 +1,7 @@
 import express from "express"
 import { join, login, logout } from "../controllers/userControllers"
 import { QuestionCreation } from "../controllers/QuestionControllers"
+import { protectedMiddleware } from "../middlewares"
 
 const globalRouter = express.Router()
 
@@ -10,6 +11,6 @@ globalRouter.post("/login", login)
 
 globalRouter.post("/logout", logout)
 
-globalRouter.post("/problem/register", QuestionCreation)
+globalRouter.post("/problem/register", protectedMiddleware, QuestionCreation)
 
 export default globalRouter
