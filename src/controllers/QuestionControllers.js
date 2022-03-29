@@ -2,7 +2,7 @@ import Question from "../models/Question"
 import User from "../models/User"
 
 export const QuestionCreation = async (req, res) => {
-  const { title, description, answer } = req.body
+  const { title, description, answer, tag, info } = req.body
   const { _id } = req.session.user
 
   try {
@@ -12,6 +12,7 @@ export const QuestionCreation = async (req, res) => {
       description,
       answer,
       owner: _id,
+      tag,
     })
 
     const user = await User.findById(_id)

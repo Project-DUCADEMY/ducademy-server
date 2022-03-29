@@ -5,6 +5,8 @@ const QuestionSchema = new mongoose.Schema({
   day: { type: String, required: true },
   description: { type: String, required: true, maxlength: 100 },
   answer: { type: Number, required: true },
+  tag: { type: String, required: false },
+  info: { type: Number },
   // meta: {
   //   views: { type: Number, default: 0, required: true },
   //   challenges: { type: Number, default: 0, required: true },
