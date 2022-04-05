@@ -4,6 +4,7 @@ import MongoStore from "connect-mongo"
 import nodemailer from "nodemailer"
 import globalRouter from "./routers/globalRouter"
 import userInfoRouter from "./routers/userInfoRouter"
+import db from "./db"
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(
 app.use("/authenticate", globalRouter)
 
 app.use("/", userInfoRouter)
+
 
 // app.use ( express.static( './../ducademy-front/build/' ))
 // app.get('/*', (req, res) => {

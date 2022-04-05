@@ -7,6 +7,7 @@ const QuestionSchema = new mongoose.Schema({
   answer: { type: Number, required: true },
   tag: { type: String, required: false },
   info: { type: Number },
+  questionNumber: { type : Number, required : false },
   // meta: {
   //   views: { type: Number, default: 0, required: true },
   //   challenges: { type: Number, default: 0, required: true },

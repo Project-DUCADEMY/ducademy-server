@@ -4,6 +4,11 @@ import User from "../models/User"
 export const QuestionCreation = async (req, res) => {
   const { title, description, answer, tag, info } = req.body
   const { _id } = req.session.user
+  const questionNumberCh = 1000
+
+  //const questionNumber
+  const question = await Question.count()
+
 
   try {
     const questionOnwer = await Question.create({
@@ -12,6 +17,7 @@ export const QuestionCreation = async (req, res) => {
       description,
       answer,
       owner: _id,
+      questionNumber : questionNumberCh + question,
       tag,
     })
 

@@ -11,3 +11,5 @@ db.once("open", () => {
 db.on("error", () => {
   console.log("❌ DB error")
 })
+
+export default db
