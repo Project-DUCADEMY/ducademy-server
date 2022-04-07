@@ -2,7 +2,7 @@ import Question from '../models/Question'
 import User from '../models/User'
 
 export const QuestionCreation = async (req, res) => {
-  const { title, description, answer, tag, info } = req.body
+  const { title, description, answer, info, source } = req.body
   const { _id } = req.session.user
   const questionNumberCh = 1000
 
@@ -11,13 +11,14 @@ export const QuestionCreation = async (req, res) => {
 
   try {
     const questionOnwer = await Question.create({
-      title,
+      questionNumber: questionNumberCh + question,
       day: new Date(),
+      owner: _id,
+      title,
       description,
       answer,
-      owner: _id,
-      questionNumber: questionNumberCh + question,
-      tag,
+      info,
+      source,
     })
 
     const user = await User.findById(_id)
@@ -36,7 +37,10 @@ export const QuestionCreation = async (req, res) => {
 
 export const pullQuestion = async (req, res) => {
   try {
-    const questionInfo = await Question.find({}, { _id: 0, owner: 0, __v: 0 })
+    const questionInfo = await Question.find(
+      {},
+      { _id: 0, owner: 0, __v: 0, day: 0, description: 0, answer: 0, source: 0 }
+    )
     return res.status(200).json({
       code: 200,
       questionInfo,
@@ -48,5 +52,22 @@ export const pullQuestion = async (req, res) => {
       code: 400,
       errorMessage: 'Failed to retrieve information',
     })
+  }
+}
+
+export const oneQuestion = async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const question = await Question.findOne(
+      { questionNumber: id },
+      { _id: 0, __v: 0 }
+    )
+    return res.status(200).json({
+      code: 200,
+      question,
+    })
+  } catch (e) {
+    console.error(e)
   }
 }

@@ -1,22 +1,16 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const QuestionSchema = new mongoose.Schema({
-  title: { type: String, required: true, maxlength: 20 },
+  questionNumber: { type: Number, required: false },
   day: { type: String, required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  title: { type: String, required: true, maxlength: 20 },
   description: { type: String, required: true, maxlength: 100 },
-  answer: { type: Number, required: true },
-  tag: { type: String, required: false },
-  info: { type: Number },
-  questionNumber: { type : Number, required : false },
-  // meta: {
-  //   views: { type: Number, default: 0, required: true },
-  //   challenges: { type: Number, default: 0, required: true },
-  //   right: { type: Number, default: 0, required: true },
-  //   failure: { type: Number, default: 0, required: true },
-  // },
-  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  answer: { type: String, required: true },
+  info: [{ type: String, required: false }],
+  source: { type: String, required: false },
 })
 
-const Question = mongoose.model("Question", QuestionSchema)
+const Question = mongoose.model('Question', QuestionSchema)
 
 export default Question
