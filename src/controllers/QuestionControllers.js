@@ -1,5 +1,5 @@
-import Question from "../models/Question"
-import User from "../models/User"
+import Question from '../models/Question'
+import User from '../models/User'
 
 export const QuestionCreation = async (req, res) => {
   const { title, description, answer, tag, info } = req.body
@@ -9,7 +9,6 @@ export const QuestionCreation = async (req, res) => {
   //const questionNumber
   const question = await Question.count()
 
-
   try {
     const questionOnwer = await Question.create({
       title,
@@ -17,7 +16,7 @@ export const QuestionCreation = async (req, res) => {
       description,
       answer,
       owner: _id,
-      questionNumber : questionNumberCh + question,
+      questionNumber: questionNumberCh + question,
       tag,
     })
 
@@ -28,9 +27,26 @@ export const QuestionCreation = async (req, res) => {
     console.error(e)
     return res.status(400).json({
       code: 400,
-      errorMessage: "DB error : Question",
+      errorMessage: 'DB error : Question',
     })
   }
 
-  console.log("test")
+  console.log('test')
+}
+
+export const pullQuestion = async (req, res) => {
+  try {
+    const questionInfo = await Question.find({}, { _id: 0, owner: 0, __v: 0 })
+    return res.status(200).json({
+      code: 200,
+      questionInfo,
+      Message: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'Failed to retrieve information',
+    })
+  }
 }

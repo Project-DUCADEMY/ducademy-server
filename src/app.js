@@ -1,10 +1,10 @@
-import express from "express"
-import session from "express-session"
-import MongoStore from "connect-mongo"
-import nodemailer from "nodemailer"
-import globalRouter from "./routers/globalRouter"
-import userInfoRouter from "./routers/userInfoRouter"
-import db from "./db"
+import express from 'express'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import nodemailer from 'nodemailer'
+import mainRouter from './routers/mainRouter'
+import infoRouter from './routers/infoRouter'
+import db from './db'
 
 const app = express()
 
@@ -22,10 +22,9 @@ app.use(
     },
   })
 )
-app.use("/authenticate", globalRouter)
+app.use('/authenticate', mainRouter)
 
-app.use("/", userInfoRouter)
-
+app.use('/', infoRouter)
 
 // app.use ( express.static( './../ducademy-front/build/' ))
 // app.get('/*', (req, res) => {
