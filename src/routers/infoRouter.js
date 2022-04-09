@@ -4,6 +4,7 @@ import {
   QuestionCreation,
   pullQuestion,
   oneQuestion,
+  deleteQuestion,
 } from '../controllers/QuestionControllers'
 import { protectedMiddleware } from '../middlewares'
 
@@ -16,5 +17,7 @@ infoRouter.post('/problem/register', protectedMiddleware, QuestionCreation)
 infoRouter.get('/problem/problems', pullQuestion)
 
 infoRouter.get('/problem/problem/', oneQuestion)
+
+infoRouter.delete('problem/delete/', deleteQuestion)
 
 export default infoRouter

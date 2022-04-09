@@ -76,3 +76,5 @@ export const oneQuestion = async (req, res) => {
     console.error(e)
   }
 }
+
+export const deleteQuestion = (req, res) => {}
