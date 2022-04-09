@@ -1,1 +1,4 @@
-console.log(Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000)
+const a = '#12#1234#dassda'.split('#')
+a.shift()
+
+console.log(a)

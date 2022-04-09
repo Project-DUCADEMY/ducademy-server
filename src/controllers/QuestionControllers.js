@@ -2,12 +2,16 @@ import Question from '../models/Question'
 import User from '../models/User'
 
 export const QuestionCreation = async (req, res) => {
-  const { title, description, answer, info, source } = req.body
+  const { title, description, answer, info, source, content } = req.body
   const { _id } = req.session.user
   const questionNumberCh = 1000
 
   //const questionNumber
   const question = await Question.count()
+
+  //info shift
+  const infoShift = info.split('#')
+  infoShift.shift()
 
   try {
     const questionOnwer = await Question.create({
@@ -15,9 +19,10 @@ export const QuestionCreation = async (req, res) => {
       day: new Date(),
       owner: _id,
       title,
+      content,
       description,
       answer,
-      info,
+      info: infoShift,
       source,
     })
 
