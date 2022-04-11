@@ -24,6 +24,7 @@ export const QuestionCreation = async (req, res) => {
       answer,
       info: infoShift,
       source,
+      existence: '1',
     })
 
     const user = await User.findById(_id)
@@ -43,7 +44,7 @@ export const QuestionCreation = async (req, res) => {
 export const pullQuestion = async (req, res) => {
   try {
     const questionInfo = await Question.find(
-      {},
+      { existence: 1 },
       { _id: 0, owner: 0, __v: 0, day: 0, description: 0, answer: 0, source: 0 }
     )
     return res.status(200).json({
@@ -68,13 +69,40 @@ export const oneQuestion = async (req, res) => {
       { questionNumber: id },
       { _id: 0, __v: 0 }
     )
+
+    if (question.existence == '0') {
+      return res.status(404).json({
+        code: 404,
+        Message: '삭제되거나 존재하지 않습니다.',
+      })
+    }
+
     return res.status(200).json({
       code: 200,
       question,
     })
   } catch (e) {
     console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
   }
 }
 
-export const deleteQuestion = (req, res) => {}
+export const deleteQuestion = async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const deleteQuestion = await Question.findOne({ questionNumber: id })
+
+    deleteQuestion.existence = '0'
+    deleteQuestion.save()
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
+  }
+}

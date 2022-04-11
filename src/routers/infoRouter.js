@@ -18,6 +18,6 @@ infoRouter.get('/problem/problems', pullQuestion)
 
 infoRouter.get('/problem/problem/', oneQuestion)
 
-infoRouter.delete('problem/delete/', deleteQuestion)
+infoRouter.delete('/problem/delete/', deleteQuestion)
 
 export default infoRouter

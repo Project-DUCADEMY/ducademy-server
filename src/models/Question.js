@@ -10,6 +10,7 @@ const QuestionSchema = new mongoose.Schema({
   answer: { type: String, required: true },
   info: [{ type: String, required: false }],
   source: { type: String, required: false },
+  existence: { type: Number, required: true },
 })
 
 const Question = mongoose.model('Question', QuestionSchema)
