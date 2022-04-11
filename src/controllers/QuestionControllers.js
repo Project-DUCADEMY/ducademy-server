@@ -30,6 +30,11 @@ export const QuestionCreation = async (req, res) => {
     const user = await User.findById(_id)
     user.Questions.push(questionOnwer._id)
     user.save()
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+    })
   } catch (e) {
     console.error(e)
     return res.status(400).json({
@@ -37,8 +42,6 @@ export const QuestionCreation = async (req, res) => {
       errorMessage: 'DB error : Question',
     })
   }
-
-  console.log('test')
 }
 
 export const pullQuestion = async (req, res) => {
@@ -98,6 +101,37 @@ export const deleteQuestion = async (req, res) => {
 
     deleteQuestion.existence = '0'
     deleteQuestion.save()
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
+  }
+}
+
+export const updateQuestion = async (req, res) => {
+  const { id } = req.query
+  const { title, content, description, answer, info, source } = req.body
+
+  try {
+    await Question.findOneAndUpdate(
+      { questionNumber: id },
+      {
+        title,
+        content,
+        description,
+        answer,
+        info,
+        source,
+      },
+      { new: true }
+    )
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+    })
   } catch (e) {
     console.error(e)
     return res.status(400).json({
