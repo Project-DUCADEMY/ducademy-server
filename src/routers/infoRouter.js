@@ -24,6 +24,6 @@ infoRouter.delete('/problem/delete/', deleteQuestion)
 
 infoRouter.put('/problem/change', updateQuestion)
 
-infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
+// nfoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
 
 export default infoRouter
