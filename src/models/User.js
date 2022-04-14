@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
   username: { type: String, requried: true, unique: true },
@@ -8,9 +8,9 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: false },
   phoneNumber: { type: String, required: false },
   birthDay: { type: Number, required: false },
-  Questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
+  Questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
 })
 
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model('User', userSchema)
 
 export default User
