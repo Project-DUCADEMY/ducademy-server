@@ -7,6 +7,7 @@ import {
   deleteQuestion,
   updateQuestion,
 } from '../controllers/QuestionControllers'
+import { workBookCreation } from '../controllers/workBook'
 import { protectedMiddleware } from '../middlewares'
 
 const infoRouter = express.Router()
@@ -22,5 +23,7 @@ infoRouter.get('/problem/problem/', oneQuestion)
 infoRouter.delete('/problem/delete/', deleteQuestion)
 
 infoRouter.put('/problem/change', updateQuestion)
+
+infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
 
 export default infoRouter
