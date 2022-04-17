@@ -7,7 +7,12 @@ import {
   deleteQuestion,
   updateQuestion,
 } from '../controllers/QuestionControllers'
-import { workBookCreation } from '../controllers/workBook'
+import {
+  workBookCreation,
+  workbookDelete,
+  workBookList,
+  workChange,
+} from '../controllers/workBook'
 import { protectedMiddleware } from '../middlewares'
 import {
   changeMemo,
@@ -33,6 +38,12 @@ infoRouter.post('/memo/create', protectedMiddleware, MemoCreation)
 infoRouter.get('/memo/list', protectedMiddleware, listMemo)
 infoRouter.put('/memo/change', protectedMiddleware, changeMemo)
 infoRouter.delete('/memo/delete', protectedMiddleware, deleteMemo)
+
+// workbook
+infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
+infoRouter.get('/workbook/list', protectedMiddleware, workBookList)
+infoRouter.put('workbook/change', protectedMiddleware, workChange)
+infoRouter.delete('workbook/delete', protectedMiddleware, workbookDelete)
 
 // workbook part
 infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
