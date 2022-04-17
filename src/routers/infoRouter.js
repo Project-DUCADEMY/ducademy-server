@@ -45,7 +45,4 @@ infoRouter.get('/workbook/list', protectedMiddleware, workBookList)
 infoRouter.put('workbook/change', protectedMiddleware, workChange)
 infoRouter.delete('workbook/delete', protectedMiddleware, workbookDelete)
 
-// workbook part
-infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
-
 export default infoRouter
