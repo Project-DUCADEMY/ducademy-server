@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const QuestionSchema = new mongoose.Schema({
   questionNumber: { type: Number, required: false },
   day: { type: String, required: true },
-  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  owner: { type: String, required: true, ref: 'User' },
   title: { type: String, required: true, maxlength: 20 },
   content: { type: String, required: true },
   description: { type: String, required: true, maxlength: 5000 },

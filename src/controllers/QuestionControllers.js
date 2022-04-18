@@ -6,18 +6,21 @@ export const QuestionCreation = async (req, res) => {
   const { _id } = req.session.user
   const questionNumberCh = 1000
 
-  //const questionNumber
+  // const questionNumber
   const question = await Question.count()
 
-  //info shift
+  // info shift
   const infoShift = info.split('#')
   infoShift.shift()
+
+  // ownerName
+  const ownerName = await User.findById({ _id }, { _id: 0, username: 1 })
 
   try {
     const questionOnwer = await Question.create({
       questionNumber: questionNumberCh + question,
       day: new Date(),
-      owner: _id,
+      owner: ownerName.username,
       title,
       content,
       description,
@@ -45,17 +48,23 @@ export const QuestionCreation = async (req, res) => {
 }
 
 export const pullQuestion = async (req, res) => {
+  let ownerName
+
   try {
     const questionInfo = await Question.find(
       { existence: 1 },
-      { _id: 0, content: 0, __v: 0, description: 0, answer: 0, source: 0, existence: 0, info: 0}
+      {
+        _id: 0,
+        content: 0,
+        __v: 0,
+        description: 0,
+        answer: 0,
+        source: 0,
+        existence: 0,
+        info: 0,
+      }
     )
-    
-    questionInfo.forEach((element, idx) => {
-      User.findOne({ _id: element.owner }, { username: 1 }).then((result) => {
-        questionInfo[idx].owner = result.username
-      })
-    })
+
     return res.status(200).json({
       code: 200,
       questionInfo,
@@ -107,6 +116,11 @@ export const deleteQuestion = async (req, res) => {
 
     deleteQuestion.existence = '0'
     deleteQuestion.save()
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'delete',
+    })
   } catch (e) {
     console.error(e)
     return res.status(400).json({
