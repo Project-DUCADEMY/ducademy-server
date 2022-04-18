@@ -48,8 +48,14 @@ export const pullQuestion = async (req, res) => {
   try {
     const questionInfo = await Question.find(
       { existence: 1 },
-      { _id: 0, owner: 0, __v: 0, day: 0, description: 0, answer: 0, source: 0 }
+      { _id: 0, content: 0, __v: 0, description: 0, answer: 0, source: 0, existence: 0, info: 0}
     )
+    
+    questionInfo.forEach((element, idx) => {
+      User.findOne({ _id: element.owner }, { username: 1 }).then((result) => {
+        questionInfo[idx].owner = result.username
+      })
+    })
     return res.status(200).json({
       code: 200,
       questionInfo,
