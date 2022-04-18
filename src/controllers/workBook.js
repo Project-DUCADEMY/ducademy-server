@@ -12,7 +12,7 @@ export const workBookCreation = async (req, res) => {
   console.log(qusetions.join(' '))
 
   try {
-    const createWorkBook = await workBook.create({
+    await workBook.create({
       title,
       owner: _id,
       vowels: qusetions,
