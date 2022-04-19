@@ -1,5 +1,6 @@
 import Question from '../models/Question'
 import User from '../models/User'
+import Like from '../models/additional/Like'
 
 export const QuestionCreation = async (req, res) => {
   const { title, description, answer, info, source, content } = req.body
@@ -33,6 +34,10 @@ export const QuestionCreation = async (req, res) => {
     const user = await User.findById(_id)
     user.Questions.push(questionOnwer._id)
     user.save()
+
+    await Like.create({
+      Question: questionNumberCh + question,
+    })
 
     return res.status(200).json({
       code: 200,
@@ -152,6 +157,44 @@ export const updateQuestion = async (req, res) => {
       code: 200,
       Message: 'success',
     })
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
+  }
+}
+
+export const likeQuestion = async (req, res) => {
+  const { id } = req.query
+  const { _id } = req.session.user
+
+  try {
+    const findUser = await Like.findOne({ User: _id, Question: id })
+    const findLike = await Like.findOne({ Question: id })
+
+    if (!findUser) {
+      findLike.User.push(_id)
+      findLike.save()
+
+      const OK = await Like.findOneAndUpdate(
+        { Question: id },
+        { like: findLike.like + 1 }
+      )
+      const end = OK.like + 1
+
+      return res.status(200).json({
+        code: 200,
+        Message: 'success',
+        end,
+      })
+    } else {
+      return res.status(400).json({
+        code: 400,
+        errorMessage: '이미 추천했습니다.',
+      })
+    }
   } catch (e) {
     console.error(e)
     return res.status(400).json({

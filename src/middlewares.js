@@ -5,13 +5,12 @@ export const localsMiddlewares = (req, res, next) => {
 }
 
 export const protectedMiddleware = (req, res, next) => {
-  console.log(req.session.loggedIn)
   if (req.session.loggedIn) {
     return next()
   } else {
     return res.status(401).json({
       code: 401,
-      errorMessage: "Session does not exist",
+      errorMessage: 'Session does not exist',
     })
   }
 }
@@ -22,7 +21,7 @@ export const publicUserMiddleware = (req, res, next) => {
   } else {
     return res.status(401).json({
       code: 401,
-      errorMessage: "Session is true",
+      errorMessage: 'Session is true',
     })
   }
 }

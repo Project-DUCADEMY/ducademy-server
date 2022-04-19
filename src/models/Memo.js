@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const MemoSchena = new mongoose.Schema({
+const MemoSchema = new mongoose.Schema({
   questionNumber: {
     type: String,
     ref: 'Question',
@@ -11,6 +11,6 @@ const MemoSchena = new mongoose.Schema({
   color: { type: String, required: false },
 })
 
-const Memo = mongoose.model('Memo', MemoSchena)
+const Memo = mongoose.model('Memo', MemoSchema)
 
 export default Memo

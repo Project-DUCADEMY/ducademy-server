@@ -6,6 +6,7 @@ import {
   oneQuestion,
   deleteQuestion,
   updateQuestion,
+  likeQuestion,
 } from '../controllers/QuestionControllers'
 import {
   workBookCreation,
@@ -29,10 +30,12 @@ infoRouter.post('/user/userinfo', userinfo)
 
 // problem part
 infoRouter.post('/problem/register', protectedMiddleware, QuestionCreation)
-infoRouter.get('/problem/problems', pullQuestion)
-infoRouter.get('/problem/problem/', oneQuestion)
-infoRouter.delete('/problem/delete/', deleteQuestion)
-infoRouter.put('/problem/change', updateQuestion)
+infoRouter.get('/problem/problems', protectedMiddleware, pullQuestion)
+infoRouter.get('/problem/problem/', protectedMiddleware, oneQuestion)
+infoRouter.delete('/problem/delete/', protectedMiddleware, deleteQuestion)
+infoRouter.put('/problem/change', protectedMiddleware, updateQuestion)
+// problem like
+infoRouter.post('/problem/like/', protectedMiddleware, likeQuestion)
 
 // memo part
 infoRouter.post('/memo/create', protectedMiddleware, MemoCreation)
