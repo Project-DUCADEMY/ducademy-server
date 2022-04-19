@@ -11,6 +11,7 @@ import {
   workBookCreation,
   workbookDelete,
   workBookList,
+  workBookOneList,
   workChange,
 } from '../controllers/workBook'
 import { protectedMiddleware } from '../middlewares'
@@ -42,7 +43,8 @@ infoRouter.delete('/memo/delete', protectedMiddleware, deleteMemo)
 // workbook
 infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
 infoRouter.get('/workbook/list', protectedMiddleware, workBookList)
-infoRouter.put('workbook/change', protectedMiddleware, workChange)
-infoRouter.delete('workbook/delete', protectedMiddleware, workbookDelete)
+infoRouter.get('/workbook/onelist/', protectedMiddleware, workBookOneList)
+infoRouter.put('/workbook/change', protectedMiddleware, workChange)
+infoRouter.delete('/workbook/delete', protectedMiddleware, workbookDelete)
 
 export default infoRouter

@@ -1,4 +1,5 @@
-import workBook from '../models/WorkBook'
+import WorkBook from '../models/WorkBook'
+import User from '../models/User'
 
 export const workBookCreation = async (req, res) => {
   const { _id } = req.session.user
@@ -9,13 +10,18 @@ export const workBookCreation = async (req, res) => {
     qusetions.push(questionNumber[i].id)
   }
 
-  console.log(qusetions.join(' '))
+  const ownerName = await User.findById({ _id }, { username: 1, _id: 0 })
 
   try {
-    await workBook.create({
+    await WorkBook.create({
       title,
-      owner: _id,
+      owner: ownerName.username,
       vowels: qusetions,
+    })
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
     })
   } catch (e) {
     console.error(e)
@@ -26,7 +32,40 @@ export const workBookCreation = async (req, res) => {
   }
 }
 
-export const workBookList = (req, res) => {}
+export const workBookList = async (req, res) => {
+  const { _id } = req.session.user
+
+  try {
+    const workBookAllList = await WorkBook.find({}, { __v: 0 })
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+      workBookAllList,
+    })
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error : Memo',
+    })
+  }
+}
+
+export const workBookOneList = async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const workBookOneList = await WorkBook.findById({ _id: id })
+    console.log(workBookOneList)
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error : Memo',
+    })
+  }
+}
 
 export const workChange = (req, res) => {}
 
