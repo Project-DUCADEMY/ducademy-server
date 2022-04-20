@@ -1,6 +1,7 @@
 import Question from '../models/Question'
 import User from '../models/User'
 import Like from '../models/additional/Like'
+import Try from '../models/additional/try'
 
 export const QuestionCreation = async (req, res) => {
   const { title, description, answer, info, source, content } = req.body
@@ -209,8 +210,36 @@ export const answrQuestion = async (req, res) => {
   const { answer, questionNumber } = req.body
 
   try {
-    const a = await User.findOne({ _id, tryQuestion: questionNumber })
-    console.log(a)
+    const answerTest = await Question.findOne({ questionNumber, answer })
+
+    const tryuUser = await Try.findOne({
+      tryUser: _id,
+      questionOwner: questionNumber,
+    })
+
+    console.log(tryuUser)
+    console.log(answerTest)
+    if (!tryuUser) {
+      if (answerTest) {
+        await Try.create({
+          questionOwner: questionNumber,
+          try: 1,
+          tryUser: _id,
+          success: true,
+        })
+      } else {
+        await Try.create({
+          questionOnwer: questionNumber,
+          try: 1,
+          tryUser: _id,
+          success: false,
+        })
+      }
+      // } else {
+
+      //   if(answer) {
+      //     await Try.findOneAndUpdate({ tryUser : _id, questionOnwer : questionNumber}, {})
+    }
   } catch (e) {
     console.error(e)
     return res.status(400).json({
