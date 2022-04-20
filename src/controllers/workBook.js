@@ -57,7 +57,12 @@ export const workBookOneList = async (req, res) => {
 
   try {
     const workBookOneList = await WorkBook.findById({ _id: id })
-    console.log(workBookOneList)
+
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+      workBookOneList,
+    })
   } catch (e) {
     console.error(e)
     return res.status(400).json({
@@ -67,6 +72,45 @@ export const workBookOneList = async (req, res) => {
   }
 }
 
-export const workChange = (req, res) => {}
+export const workChange = async (req, res) => {
+  const { title, vowels } = req.body
+  const { id } = req.query
 
-export const workbookDelete = (req, res) => {}
+  try {
+    await WorkBook.findOneAndUpdate(
+      { _id: id },
+      {
+        title,
+        vowels,
+      }
+    )
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error : Memo',
+    })
+  }
+}
+
+export const workbookDelete = async (req, res) => {
+  const { id } = req.query
+
+  try {
+    await WorkBook.findByIdAndDelete({ _id: id })
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error : Memo',
+    })
+  }
+}

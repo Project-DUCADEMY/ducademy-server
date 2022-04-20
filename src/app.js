@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer'
 import mainRouter from './routers/mainRouter'
 import infoRouter from './routers/infoRouter'
 import db from './db'
+import WorkBook from './models/WorkBook'
 
 const app = express()
 
@@ -25,6 +26,12 @@ app.use(
 app.use('/authenticate', mainRouter)
 
 app.use('/', infoRouter)
+
+app.get('/test', async (req, res) => {
+  const a = await WorkBook.findOne({ _id: '625d71a66a18443b126cecb5' })
+
+  console.log(a)
+})
 
 // app.use ( express.static( './../ducademy-front/build/' ))
 // app.get('/*', (req, res) => {
