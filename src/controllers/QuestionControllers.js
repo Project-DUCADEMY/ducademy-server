@@ -203,3 +203,19 @@ export const likeQuestion = async (req, res) => {
     })
   }
 }
+
+export const answrQuestion = async (req, res) => {
+  const { _id } = req.session.user
+  const { answer, questionNumber } = req.body
+
+  try {
+    const a = await User.findOne({ _id, tryQuestion: questionNumber })
+    console.log(a)
+  } catch (e) {
+    console.error(e)
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
+  }
+}

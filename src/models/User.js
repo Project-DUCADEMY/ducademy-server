@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: false },
   birthDay: { type: Number, required: false },
   Questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+  tryQuestion: [{ type: String }],
 })
 
 const User = mongoose.model('User', userSchema)

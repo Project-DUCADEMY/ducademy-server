@@ -27,15 +27,6 @@ app.use('/authenticate', mainRouter)
 
 app.use('/', infoRouter)
 
-app.get('/test', async (req, res) => {
-  const a = await WorkBook.findOne(
-    { _id: '625d71a66a18443b126cecb5' },
-    { $push: { vowels: { 1: '123' } } }
-  )
-
-  console.log(a)
-})
-
 // app.use ( express.static( './../ducademy-front/build/' ))
 // app.get('/*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../ducademy-front/build/index.html'))
