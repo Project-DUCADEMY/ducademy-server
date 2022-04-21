@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt"
-import nodemailer from "nodemailer"
-import User from "../models/User"
+import bcrypt from 'bcrypt'
+import nodemailer from 'nodemailer'
+import User from '../models/User'
 
 export const join = async (req, res) => {
   const { username, email, password, passwordCh } = req.body
@@ -8,7 +8,7 @@ export const join = async (req, res) => {
   if (password !== passwordCh) {
     return res.status(400).json({
       code: 400,
-      errorMessage: "The passwords are different.",
+      errorMessage: 'The passwords are different.',
     })
   }
 
@@ -16,7 +16,7 @@ export const join = async (req, res) => {
   if (usernameExists) {
     return res.status(400).json({
       code: 400,
-      errorMessage: "This username already exists.",
+      errorMessage: 'This username already exists.',
     })
   }
 
@@ -24,7 +24,7 @@ export const join = async (req, res) => {
   if (emailExists) {
     return res.status(400).json({
       code: 400,
-      errorMessage: "This email already exists",
+      errorMessage: 'This email already exists',
     })
   }
 
@@ -40,11 +40,11 @@ export const join = async (req, res) => {
     console.error(e)
     return res.status(400).json({
       code: 400,
-      errorMessage: "DB error : User",
+      errorMessage: 'DB error : User',
     })
   }
 
-  return res.redirect("/login")
+  return res.redirect('/login')
 }
 
 export const login = async (req, res) => {
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
   if (!user) {
     return res.status(400).json({
       code: 400,
-      errorMessage: "User is not found",
+      errorMessage: 'User is not found',
     })
   } else {
     ok = await bcrypt.compare(password, user.password)
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
   if (!ok) {
     return res.status(400).json({
       code: 400,
-      errorMessage: "The password is wrong.",
+      errorMessage: 'The password is wrong.',
     })
   }
 
@@ -73,7 +73,7 @@ export const login = async (req, res) => {
 
   return res.status(200).json({
     code: 200,
-    message: "success",
+    message: 'success',
   })
 }
 
@@ -100,5 +100,5 @@ export const logout = (req, res) => {
 
   console.log(req.session)
 
-  res.redirect("/")
+  res.redirect('/')
 }
