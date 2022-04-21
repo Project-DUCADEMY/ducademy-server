@@ -19,7 +19,7 @@ export const QuestionCreation = async (req, res) => {
   const ownerName = await User.findById({ _id }, { _id: 0, username: 1 })
 
   try {
-    const questionOnwer = await Question.create({
+    const questionOwner = await Question.create({
       questionNumber: questionNumberCh + question,
       day: new Date(),
       owner: ownerName.username,
@@ -33,7 +33,7 @@ export const QuestionCreation = async (req, res) => {
     })
 
     const user = await User.findById(_id)
-    user.Questions.push(questionOnwer._id)
+    user.Questions.push(questionOwner._id)
     user.save()
 
     await Like.create({
@@ -212,14 +212,24 @@ export const answrQuestion = async (req, res) => {
   try {
     const answerTest = await Question.findOne({ questionNumber, answer })
 
-    const tryuUser = await Try.findOne({
-      tryUser: _id,
-      questionOwner: questionNumber,
-    })
+    const tryUser = await Try.findOne(
+      {
+        tryUser: _id,
+        questionOwner: questionNumber,
+      },
+      { try: 1, success: 1 }
+    )
 
-    console.log(tryuUser)
-    console.log(answerTest)
-    if (!tryuUser) {
+    if (tryUser.success) {
+      return res.status(200).json({
+        code: 200,
+        try: tryUser.try,
+        success: tryUser.success,
+        Message: '이미 문제를 맞췄습니다.',
+      })
+    }
+
+    if (!tryUser) {
       if (answerTest) {
         await Try.create({
           questionOwner: questionNumber,
@@ -227,18 +237,56 @@ export const answrQuestion = async (req, res) => {
           tryUser: _id,
           success: true,
         })
+
+        return res.status(200).json({
+          code: 200,
+          try: 1,
+          success: true,
+          Message: '맞았습니다.',
+        })
       } else {
         await Try.create({
-          questionOnwer: questionNumber,
+          questionOwner: questionNumber,
           try: 1,
           tryUser: _id,
           success: false,
         })
+        return res.status(200).json({
+          code: 200,
+          try: 1,
+          success: false,
+          Message: '틀렸습니다.',
+        })
       }
-      // } else {
+    } else {
+      if (answerTest) {
+        const trueEnd = await Try.findOneAndUpdate(
+          { tryUser: _id, questionOnwer: questionNumber },
+          { try: tryUser.try + 1, success: true }
+        )
 
-      //   if(answer) {
-      //     await Try.findOneAndUpdate({ tryUser : _id, questionOnwer : questionNumber}, {})
+        return res.status(200).json({
+          code: 200,
+          try: trueEnd.try + 1,
+          success: true,
+          Message: '맞았습니다.',
+        })
+      } else {
+        const falseEnd = await Try.findOneAndUpdate(
+          {
+            tryUser: _id,
+            questionOwner: questionNumber,
+          },
+          { try: tryUser.try + 1, success: false }
+        )
+
+        return res.status(200).json({
+          code: 200,
+          try: falseEnd.try + 1,
+          success: false,
+          Message: '틀렸습니다.',
+        })
+      }
     }
   } catch (e) {
     console.error(e)
