@@ -1,15 +1,16 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 mongoose.connect(process.env.DB_URL)
 
 const db = mongoose.connection
 
-db.once("open", () => {
-  console.log("✅ DB Connected")
+db.once('open', () => {
+  console.log('✅ DB Connected')
 })
 
-db.on("error", () => {
-  console.log("❌ DB error")
+db.on('error', (e) => {
+  cos
+  console.log('❌ DB error')
 })
 
 export default db
