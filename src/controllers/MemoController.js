@@ -61,8 +61,7 @@ export const changeMemo = async (req, res) => {
 }
 
 export const deleteMemo = async (req, res) => {
-  const { id } = req.body
-
+  const { id } = req.query
   try {
     await Memo.findByIdAndDelete({ _id: id })
     return res.status(200).json({
