@@ -1,4 +1,5 @@
 import QnA from '../models/Qna'
+import User from '../models/User'
 
 export const createQnA = async (req, res) => {
   const { title, category, content } = req.body
@@ -13,11 +14,13 @@ export const createQnA = async (req, res) => {
   //   a.save()
 
   try {
-    const a = await QnA.create({
+    const creator = await User.findOne({ _id }, { username: 1, _id: 0 })
+
+    await QnA.create({
       title,
       category,
       content,
-      creator: _id,
+      creator: creator.username,
       day: new Date(),
     })
     res.status(200).json({
@@ -37,6 +40,10 @@ export const allQnA = async (req, res) => {
   try {
     const a = await QnA.find({}, { answer: 0, __v: 0 })
 
+    res.status(200).json({
+      code: 200,
+      Message: '',
+    })
     console.log(a)
   } catch (e) {
     return res.status(400).json({

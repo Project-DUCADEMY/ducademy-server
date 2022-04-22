@@ -4,7 +4,7 @@ const QnASchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: String, required: true },
   content: { type: String, required: true },
-  creator: { type: mongoose.Schema.Types.ObjectId, required: true },
+  creator: { type: String, required: true },
   answer: [
     {
       name: { type: String, required: false },
