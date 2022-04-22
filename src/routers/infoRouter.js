@@ -23,6 +23,7 @@ import {
   listMemo,
   MemoCreation,
 } from '../controllers/MemoController'
+import { allQnA, createQnA } from '../controllers/QnaControllers'
 
 const infoRouter = express.Router()
 
@@ -34,7 +35,7 @@ infoRouter.post('/problem/register', protectedMiddleware, QuestionCreation)
 infoRouter.get('/problem/problems', protectedMiddleware, pullQuestion)
 infoRouter.get('/problem/problem/', protectedMiddleware, oneQuestion)
 infoRouter.delete('/problem/delete/', protectedMiddleware, deleteQuestion)
-infoRouter.put('/problem/change', protectedMiddleware, updateQuestion)
+infoRouter.put('/problem/change/', protectedMiddleware, updateQuestion)
 infoRouter.post('/problem/answer', protectedMiddleware, answrQuestion)
 
 // problem like
@@ -50,7 +51,11 @@ infoRouter.delete('/memo/delete', protectedMiddleware, deleteMemo)
 infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
 infoRouter.get('/workbook/list', protectedMiddleware, workBookList)
 infoRouter.get('/workbook/onelist/', protectedMiddleware, workBookOneList)
-infoRouter.put('/workbook/change', protectedMiddleware, workChange)
-infoRouter.delete('/workbook/delete', protectedMiddleware, workbookDelete)
+infoRouter.put('/workbook/change/', protectedMiddleware, workChange)
+infoRouter.delete('/workbook/delete/', protectedMiddleware, workbookDelete)
+
+// QnA
+infoRouter.post('/QnA/create', protectedMiddleware, createQnA)
+infoRouter.get('/QnA/allList', allQnA)
 
 export default infoRouter

@@ -9,7 +9,7 @@ db.once('open', () => {
 })
 
 db.on('error', (e) => {
-  cos
+  console.log(e)
   console.log('❌ DB error')
 })
 
