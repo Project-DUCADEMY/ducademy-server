@@ -72,6 +72,8 @@ export const oneQnA = async (req, res) => {
   }
 }
 
+export const changeQnA = async (req, res) => {}
+
 export const deleteQnA = async (req, res) => {
   const { id } = req.query
   const { _id } = req.session.user
