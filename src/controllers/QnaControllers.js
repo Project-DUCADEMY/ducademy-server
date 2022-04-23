@@ -38,8 +38,16 @@ export const createQnA = async (req, res) => {
 }
 
 export const allQnA = async (req, res) => {
+  const { query } = req.query
   try {
-    const a = await QnA.find({}, { answer: 0, __v: 0, content: 0})
+    const a = await QnA.find({
+      $or: [
+        {title: {$regex: query}, '$options':'i'},
+        {category: {$regex: query}, '$options':'i'},
+        {content: {$regex: query}, '$options':'i'},
+        {creator: {$regex: query}, '$options':'i'},
+      ]
+    }, { answer: 0, __v: 0, content: 0})
 
     res.status(200).json({
       code: 200,
