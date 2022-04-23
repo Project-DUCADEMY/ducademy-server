@@ -208,7 +208,7 @@ export const likeQuestion = async (req, res) => {
 export const answrQuestion = async (req, res) => {
   const { _id } = req.session.user
   const { answer, questionNumber } = req.body
-
+  console.log(answer, questionNumber)
   try {
     const answerTest = await Question.findOne({ questionNumber, answer })
 
@@ -220,14 +220,14 @@ export const answrQuestion = async (req, res) => {
       { try: 1, success: 1 }
     )
 
-    if (tryUser.success) {
-      return res.status(200).json({
-        code: 200,
-        try: tryUser.try,
-        success: tryUser.success,
-        Message: '이미 문제를 맞췄습니다.',
-      })
-    }
+    // if (tryUser.success) {
+    //   return res.status(200).json({
+    //     code: 200,
+    //     try: tryUser.try,
+    //     success: tryUser.success,
+    //     Message: '이미 문제를 맞췄습니다.',
+    //   })
+    // }
 
     if (!tryUser) {
       if (answerTest) {

@@ -29,6 +29,7 @@ import {
   createQnA,
   deleteQnA,
   oneQnA,
+  registerComment,
 } from '../controllers/QnaControllers'
 
 const infoRouter = express.Router()
@@ -66,5 +67,7 @@ infoRouter.get('/QnA/allList', allQnA)
 infoRouter.get('/QnA/oneList/', oneQnA)
 infoRouter.put('QnA/change/', changeQnA)
 infoRouter.delete('/QnA/deleteList/', protectedMiddleware, deleteQnA)
+infoRouter.get('/QnA/detail', oneQnA)
+infoRouter.post('/QnA/registerComment', protectedMiddleware, registerComment)
 
 export default infoRouter

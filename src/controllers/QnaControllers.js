@@ -20,6 +20,7 @@ export const createQnA = async (req, res) => {
       title,
       category,
       content,
+      comment: [],
       creator: creator.username,
       day: new Date(),
     })
@@ -38,13 +39,13 @@ export const createQnA = async (req, res) => {
 
 export const allQnA = async (req, res) => {
   try {
-    const a = await QnA.find({}, { answer: 0, __v: 0 })
+    const a = await QnA.find({}, { answer: 0, __v: 0, content: 0})
 
     res.status(200).json({
       code: 200,
-      Message: '모든 문제를 불러 왔습니다.',
+      QnAList: a,
+      Message: '',
     })
-    console.log(a)
   } catch (e) {
     return res.status(400).json({
       code: 400,
@@ -55,14 +56,12 @@ export const allQnA = async (req, res) => {
 
 export const oneQnA = async (req, res) => {
   const { id } = req.query
-
   try {
-    const findQnA = await QnA.findOne({ _id: id })
-
+    const result = await QnA.findOne({_id: id}, { __v: 0})
     res.status(200).json({
       code: 200,
-      Message: '문제 조회 성공.',
-      findQnA,
+      QnA: result,
+      Message: '',
     })
   } catch (e) {
     return res.status(400).json({
@@ -97,6 +96,44 @@ export const deleteQnA = async (req, res) => {
         errorMessage: '이 문제의 삭제 권한을 가지고 있지 않습니다.',
       })
     }
+
+
+
+export const registerComment = async (req, res) => {
+  const { id } = req.query
+  const userid = req.session.user._id
+  const { content } = req.body
+  const allInfos = () => {
+    return Promise.all([
+      User.findOne({ _id: userid }, { username: 1, _id: 0 }),
+      QnA.findOne({_id: id}, { __v: 0})
+    ]).then(result => {
+      return {
+        username: result[0],
+        QnA: result[1]
+      }
+    })
+  }
+  try {
+    allInfos()
+    .then(({username, QnA}) => {
+      QnA.comment.push({
+        name: username.username,
+        content: content,
+        date: new Date(),
+        adopt: false
+      })
+      QnA.save()
+      return res.status(200).json({
+        code: 200,
+        Message: 'success',
+        QnA: QnA
+      })
+    })
+    .catch((err) => {
+      throw err
+    })
+
   } catch (e) {
     return res.status(400).json({
       code: 400,
