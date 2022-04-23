@@ -64,10 +64,9 @@ infoRouter.delete('/workbook/delete/', protectedMiddleware, workbookDelete)
 // QnA
 infoRouter.post('/QnA/create', protectedMiddleware, createQnA)
 infoRouter.get('/QnA/allList', allQnA)
-infoRouter.get('/QnA/oneList/', oneQnA)
 infoRouter.put('QnA/change/', changeQnA)
 infoRouter.delete('/QnA/deleteList/', protectedMiddleware, deleteQnA)
-infoRouter.get('/QnA/detail', oneQnA)
-infoRouter.post('/QnA/registerComment', protectedMiddleware, registerComment)
+infoRouter.get('/QnA/detail', oneQnA) //QnA 하나에 대한 상세정보
+infoRouter.post('/QnA/registerComment', protectedMiddleware, registerComment) //메모 등록
 
 export default infoRouter
