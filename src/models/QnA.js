@@ -5,10 +5,12 @@ const QnASchema = new mongoose.Schema({
   category: { type: String, required: true },
   content: { type: String, required: true },
   creator: { type: String, required: true },
-  answer: [
+  comment: [
     {
       name: { type: String, required: false },
-      cotent: { type: String, required: false },
+      content: { type: String, required: false },
+      date: { type: String, required: false},
+      adopt: { type: Boolean, required: true}
     },
   ],
   day: { type: String, required: true },
