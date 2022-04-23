@@ -96,7 +96,11 @@ export const deleteQnA = async (req, res) => {
         errorMessage: '이 문제의 삭제 권한을 가지고 있지 않습니다.',
       })
     }
+  }
+  catch (e) {
 
+  }
+}
 
 
 export const registerComment = async (req, res) => {
