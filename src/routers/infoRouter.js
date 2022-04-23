@@ -23,7 +23,13 @@ import {
   listMemo,
   MemoCreation,
 } from '../controllers/MemoController'
-import { allQnA, createQnA } from '../controllers/QnaControllers'
+import {
+  allQnA,
+  changeQnA,
+  createQnA,
+  deleteQnA,
+  oneQnA,
+} from '../controllers/QnaControllers'
 
 const infoRouter = express.Router()
 
@@ -57,5 +63,8 @@ infoRouter.delete('/workbook/delete/', protectedMiddleware, workbookDelete)
 // QnA
 infoRouter.post('/QnA/create', protectedMiddleware, createQnA)
 infoRouter.get('/QnA/allList', allQnA)
+infoRouter.get('/QnA/oneList/', oneQnA)
+infoRouter.put('QnA/change/', changeQnA)
+infoRouter.delete('/QnA/deleteList/', protectedMiddleware, deleteQnA)
 
 export default infoRouter
