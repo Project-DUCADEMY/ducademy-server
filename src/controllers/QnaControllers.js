@@ -107,35 +107,29 @@ export const registerComment = async (req, res) => {
   const { id } = req.query
   const userid = req.session.user._id
   const { content } = req.body
-  const allInfos = () => {
-    return Promise.all([
+  const allInfos = async () => {
+    const result = await Promise.all([
       User.findOne({ _id: userid }, { username: 1, _id: 0 }),
-      QnA.findOne({_id: id}, { __v: 0})
-    ]).then(result => {
-      return {
-        username: result[0],
-        QnA: result[1]
-      }
-    })
+      QnA.findOne({ _id: id }, { __v: 0 })
+    ])
+    return {
+      username: result[0].username,
+      QnA: result[1]
+    }
   }
   try {
-    allInfos()
-    .then(({username, QnA}) => {
-      QnA.comment.push({
-        name: username.username,
-        content: content,
-        date: new Date(),
-        adopt: false
-      })
-      QnA.save()
-      return res.status(200).json({
-        code: 200,
-        Message: 'success',
-        QnA: QnA
-      })
+    const { username, QnA } = await allInfos()
+    QnA.comment.push({
+      name: username,
+      content: content,
+      date: new Date(),
+      adopt: false
     })
-    .catch((err) => {
-      throw err
+    QnA.save()
+    return res.status(200).json({
+      code: 200,
+      Message: 'success',
+      QnA: QnA
     })
 
   } catch (e) {
