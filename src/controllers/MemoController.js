@@ -29,9 +29,19 @@ export const MemoCreation = async (req, res) => {
 
 export const listMemo = async (req, res) => {
   const { _id } = req.session.user
-
+  const { query } = req.query
   try {
-    const readMemo = await Memo.find({ owner: _id }, { owner: 0, __v: 0 })
+    const readMemo = await Memo.find(
+      {
+        owner: _id,
+        $or: [
+          {content: {$regex: query}},
+          {questionNumber: {$regex: query, '$options':'i'}}
+        ]
+      }
+      ,{ owner: 0, __v: 0 }
+    )
+
     return res.status(200).json({
       code: 200,
       readMemo,
