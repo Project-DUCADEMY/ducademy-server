@@ -87,12 +87,30 @@ export const pullQuestion = async (req, res) => {
 
 export const oneQuestion = async (req, res) => {
   const { id } = req.query
-
+  const { _id } = req.session.user
+  const queryQuestionDetail = async () => {
+    let result = await Promise.all([
+      await Question.findOne(
+        { questionNumber: id },
+        { _id: 0, __v: 0 }
+      ),
+      await Try.findOne(
+        {
+          tryUser: _id,
+          questionOwner: id,
+        },
+        { try: 1, success: 1 }
+      )
+    ])
+    return result
+  }
   try {
     const question = await Question.findOne(
       { questionNumber: id },
       { _id: 0, __v: 0 }
     )
+
+    let test = await queryQuestionDetail();
 
     if (question.existence == '0') {
       return res.status(404).json({
@@ -103,7 +121,8 @@ export const oneQuestion = async (req, res) => {
 
     return res.status(200).json({
       code: 200,
-      question,
+      question: test[0],
+      submit: test[1]
     })
   } catch (e) {
     console.error(e)
