@@ -54,11 +54,19 @@ export const QuestionCreation = async (req, res) => {
 }
 
 export const pullQuestion = async (req, res) => {
-  let ownerName
 
+  const { query } = req.query
+  console.log(query)
   try {
     const questionInfo = await Question.find(
-      { existence: 1 },
+      { existence: 1,
+        $or: [
+          {title: {$regex: query}, '$options':'i'},
+          {owner: {$regex: query}, '$options':'i'},
+          {content: {$regex: query}, '$options':'i'},
+          {info: {$regex: query}, '$options':'i'}
+        ]
+      },
       {
         _id: 0,
         content: 0,
