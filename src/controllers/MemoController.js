@@ -71,12 +71,21 @@ export const changeMemo = async (req, res) => {
 }
 
 export const deleteMemo = async (req, res) => {
-  const { id } = req.query
+  const { _id } = req.session.user
+  const { id, query } = req.query
   try {
     await Memo.findByIdAndDelete({ _id: id })
+    const memos = await Memo.find({
+      owner: _id,
+      $or: [
+        {content: {$regex: query}},
+        {questionNumber: {$regex: query, '$options':'i'}}
+      ]
+    }, { owner: 0, __v: 0 })
     return res.status(200).json({
       code: 200,
-      Message: 'success',
+      memos: memos,
+      Message: 'success'
     })
   } catch (e) {
     return res.status(400).json({

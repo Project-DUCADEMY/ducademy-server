@@ -48,6 +48,7 @@ export const allQnA = async (req, res) => {
         {creator: {$regex: query}, '$options':'i'},
       ]
     }, { answer: 0, __v: 0, content: 0})
+    .sort({ day : -1 })
 
     res.status(200).json({
       code: 200,
@@ -61,6 +62,29 @@ export const allQnA = async (req, res) => {
     })
   }
 }
+
+export const recentQuestion = async (req, res) => {
+  const { _id } = req.session.user
+  try {
+    User.findOne({ _id }, { username: 1, _id: 0 })
+    .then(({username}) => {
+      QnA.find({ creator: username }, { answer: 0, __v: 0, content: 0}).sort({ day : -1 }).limit(6)
+      .then(a => {
+        res.status(200).json({
+          code: 200,
+          QnAList: a,
+          Message: '',
+        })
+      }).catch(e => {throw e})
+    }).catch(e => {throw e})
+  } catch (e) {
+    return res.status(400).json({
+      code: 400,
+      errorMessage: 'DB error',
+    })
+  }
+}
+
 
 export const oneQnA = async (req, res) => {
   const { id } = req.query
@@ -109,6 +133,7 @@ export const deleteQnA = async (req, res) => {
 
   }
 }
+
 
 
 export const registerComment = async (req, res) => {

@@ -56,7 +56,6 @@ export const QuestionCreation = async (req, res) => {
 export const pullQuestion = async (req, res) => {
 
   const { query } = req.query
-  console.log(query)
   try {
     const questionInfo = await Question.find(
       { existence: 1,

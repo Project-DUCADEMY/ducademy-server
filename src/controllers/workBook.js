@@ -3,7 +3,7 @@ import User from '../models/User'
 
 export const workBookCreation = async (req, res) => {
   const { _id } = req.session.user
-  const { title, questionNumber } = req.body
+  const { title, questionNumber, color } = req.body
   const qusetions = []
 
   for (let i = 0; i < questionNumber.length; i++) {
@@ -15,6 +15,7 @@ export const workBookCreation = async (req, res) => {
   try {
     await WorkBook.create({
       title,
+      color: color,
       owner: ownerName.username,
       vowels: qusetions,
     })

@@ -30,6 +30,7 @@ import {
   deleteQnA,
   oneQnA,
   registerComment,
+  recentQuestion
 } from '../controllers/QnaControllers'
 
 const infoRouter = express.Router()
@@ -68,5 +69,6 @@ infoRouter.put('QnA/change/', changeQnA)
 infoRouter.delete('/QnA/deleteList/', protectedMiddleware, deleteQnA)
 infoRouter.get('/QnA/detail', oneQnA) //QnA 하나에 대한 상세정보
 infoRouter.post('/QnA/registerComment', protectedMiddleware, registerComment) //메모 등록
+infoRouter.get('/QnA/recent', protectedMiddleware, recentQuestion) //메모 등록
 
 export default infoRouter
