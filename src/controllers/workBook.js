@@ -1,5 +1,6 @@
 import WorkBook from '../models/WorkBook'
 import User from '../models/User'
+import Question from '../models/Question'
 
 export const workBookCreation = async (req, res) => {
   const { _id } = req.session.user
@@ -55,14 +56,34 @@ export const workBookList = async (req, res) => {
 
 export const workBookOneList = async (req, res) => {
   const { id } = req.query
+  let QuestionList = []
 
   try {
     const workBookOneList = await WorkBook.findById({ _id: id })
+
+    for (let i = 0; i < workBookOneList.vowels.length; i++) {
+      QuestionList.push(
+        await Question.findOne(
+          { questionNumber: workBookOneList.vowels[i] },
+          {
+            _id: 0,
+            content: 0,
+            __v: 0,
+            description: 0,
+            answer: 0,
+            source: 0,
+            existence: 0,
+            info: 0,
+          }
+        )
+      )
+    }
 
     return res.status(200).json({
       code: 200,
       Message: 'success',
       workBookOneList,
+      QuestionList,
     })
   } catch (e) {
     console.error(e)
