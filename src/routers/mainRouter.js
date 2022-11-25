@@ -1,14 +1,12 @@
 import express from 'express'
-import { join, login, logout } from '../controllers/userControllers'
-import { QuestionCreation } from '../controllers/QuestionControllers'
-import { protectedMiddleware } from '../middlewares'
+import { join, login, joinPage, loginPage } from '../controllers/userController'
 
 const mainRouter = express.Router()
 
+mainRouter.get('/join', joinPage)
 mainRouter.post('/join', join)
 
+mainRouter.get('/login', loginPage)
 mainRouter.post('/login', login)
-
-mainRouter.post('/logout', logout)
 
 export default mainRouter

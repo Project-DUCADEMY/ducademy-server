@@ -1,74 +1,43 @@
 import express from 'express'
-import { userinfo } from '../controllers/userControllers'
+import multer from 'multer'
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'src/public/image')
+  },
+  filename(req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`)
+  },
+})
+const upload = multer({ storage: storage })
+
 import {
-  QuestionCreation,
-  pullQuestion,
-  oneQuestion,
-  deleteQuestion,
-  updateQuestion,
-  likeQuestion,
-  answrQuestion,
-} from '../controllers/QuestionControllers'
-import {
-  workBookCreation,
-  workbookDelete,
-  workBookList,
-  workBookOneList,
-  workChange,
-} from '../controllers/workBook'
-import { protectedMiddleware } from '../middlewares'
-import {
-  changeMemo,
-  deleteMemo,
-  listMemo,
-  MemoCreation,
-} from '../controllers/MemoController'
-import {
-  allQnA,
-  changeQnA,
-  createQnA,
-  deleteQnA,
-  oneQnA,
-  registerComment,
-  recentQuestion
-} from '../controllers/QnaControllers'
+  admin,
+  main,
+  choice,
+  registration,
+  productRegistration,
+  deleteOne,
+  updatePage,
+  updateOne
+} from '../controllers/kioskController'
 
 const infoRouter = express.Router()
 
-// userinfo part
-infoRouter.post('/user/userinfo', userinfo)
+infoRouter.get('/', main)
 
-// problem part
-infoRouter.post('/problem/register', protectedMiddleware, QuestionCreation)
-infoRouter.get('/problem/problems', protectedMiddleware, pullQuestion)
-infoRouter.get('/problem/problem/', protectedMiddleware, oneQuestion)
-infoRouter.delete('/problem/delete/', protectedMiddleware, deleteQuestion)
-infoRouter.put('/problem/change/', protectedMiddleware, updateQuestion)
-infoRouter.post('/problem/answer', protectedMiddleware, answrQuestion)
+infoRouter.get('/admin', admin)
 
-// problem like
-infoRouter.post('/problem/like/', protectedMiddleware, likeQuestion)
+infoRouter.get('/choice/:id', choice )
 
-// memo part
-infoRouter.post('/memo/create', protectedMiddleware, MemoCreation)
-infoRouter.get('/memo/list', protectedMiddleware, listMemo)
-infoRouter.put('/memo/change', protectedMiddleware, changeMemo)
-infoRouter.delete('/memo/delete', protectedMiddleware, deleteMemo)
+infoRouter.get('/registration', registration)
+infoRouter.post('/registration', upload.single('img'), productRegistration)
 
-// workbook
-infoRouter.post('/workbook/create', protectedMiddleware, workBookCreation)
-infoRouter.get('/workbook/list', protectedMiddleware, workBookList)
-infoRouter.get('/workbook/onelist/', protectedMiddleware, workBookOneList)
-infoRouter.put('/workbook/change/', protectedMiddleware, workChange)
-infoRouter.delete('/workbook/delete/', protectedMiddleware, workbookDelete)
+infoRouter.get('/delete/:id', deleteOne)
 
-// QnA
-infoRouter.post('/QnA/create', protectedMiddleware, createQnA)
-infoRouter.get('/QnA/allList', allQnA)
-infoRouter.put('QnA/change/', changeQnA)
-infoRouter.delete('/QnA/deleteList/', protectedMiddleware, deleteQnA)
-infoRouter.get('/QnA/detail', oneQnA) //QnA 하나에 대한 상세정보
-infoRouter.post('/QnA/registerComment', protectedMiddleware, registerComment) //메모 등록
-infoRouter.get('/QnA/recent', protectedMiddleware, recentQuestion) //메모 등록
+infoRouter.get('/update/:id', updatePage)
+infoRouter.post('/update/:id', upload.single('img'), updateOne)
+
+
 
 export default infoRouter

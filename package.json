@@ -7,15 +7,18 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "connect-mongo": "^4.6.0",
+    "bootstrap": "^5.2.2",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
+    "ejs": "^3.1.8",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
-    "mongoose": "^6.1.4",
+    "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.7.3",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "sqlite3": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
