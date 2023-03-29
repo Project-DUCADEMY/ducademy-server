@@ -5,13 +5,6 @@ export const createQnA = async (req, res) => {
   const { title, category, content } = req.body
   const { _id } = req.session.user
 
-  //   const a = await QnA.findOne({ creator: _id })
-
-  //   await a.answer.push({
-  //     name: '1243',
-  //     co: '1234',
-  //   })
-  //   a.save()
 
   try {
     const creator = await User.findOne({ _id }, { username: 1, _id: 0 })
